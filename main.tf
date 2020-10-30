@@ -21,7 +21,7 @@ data "terraform_remote_state" "cluster" {
 resource "local_file" "kube_config" {
   filename = "kube_config.yaml"
   sensitive_content  = data.terraform_remote_state.cluster.outputs.kube_config
-  file_permission = "0666"
+  file_permission = "0444"
 }
 
 provider "kubernetes" {
