@@ -27,11 +27,13 @@ resource "local_file" "kube_config" {
 provider "kubernetes" {
   version = "~> 1.11"
   config_path = local_file.kube_config.filename
+  host = data.terraform_remote_state.cluster.outputs.host
 }
 
 provider "helm" {
   version = "~> 1.0"
   kubernetes {
     config_path = local_file.kube_config.filename
+    host = data.terraform_remote_state.cluster.outputs.host
   }
 }
