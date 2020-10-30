@@ -28,13 +28,19 @@ provider "kubernetes" {
   cluster_ca_certificate = data.terraform_remote_state.cluster.outputs.cluster_ca_certificate
 }
 
+resource "local_file" "kube_config" {
+  filename = "kubeconfig.yaml"
+  content  = data.terraform_remote_state.cluster.outputs.kube_config
+}
+
 provider "helm" {
   version = "~> 1.0"
   kubernetes {
-    load_config_file       = false
-    host                   = data.terraform_remote_state.cluster.outputs.host
-    username               = data.terraform_remote_state.cluster.outputs.username
-    password               = data.terraform_remote_state.cluster.outputs.password
-    cluster_ca_certificate = data.terraform_remote_state.cluster.outputs.cluster_ca_certificate
+    config_path = local_file.kube_config.filename
+    # load_config_file       = false
+    # host                   = data.terraform_remote_state.cluster.outputs.host
+    # username               = data.terraform_remote_state.cluster.outputs.username
+    # password               = data.terraform_remote_state.cluster.outputs.password
+    # cluster_ca_certificate = data.terraform_remote_state.cluster.outputs.cluster_ca_certificate
   }
 }
