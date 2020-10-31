@@ -20,20 +20,25 @@ data "terraform_remote_state" "cluster" {
 
 resource "local_file" "kube_config" {
   filename = "kube_config.yaml"
-  sensitive_content  = data.terraform_remote_state.cluster.outputs.kube_config
+  # sensitive_content = data.terraform_remote_state.cluster.outputs.kube_config
+  content = data.terraform_remote_state.cluster.outputs.kube_config
   file_permission = "0666"
+
+  # provisioner "local-exec" {
+  #   command = "cat ${local_file.kube_config}"
+  # }
 }
 
 provider "kubernetes" {
   version = "~> 1.11"
   config_path = local_file.kube_config.filename
-  host = data.terraform_remote_state.cluster.outputs.host
+  # host = data.terraform_remote_state.cluster.outputs.host
 }
 
 provider "helm" {
   version = "~> 1.0"
   kubernetes {
     config_path = local_file.kube_config.filename
-    host = data.terraform_remote_state.cluster.outputs.host
+    # host = data.terraform_remote_state.cluster.outputs.host
   }
 }
