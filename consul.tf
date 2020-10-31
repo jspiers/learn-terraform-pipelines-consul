@@ -4,7 +4,7 @@ resource "helm_release" "consul" {
   repository = "https://helm.releases.hashicorp.com"
   name       = "${var.release_name}-consul"
   chart      = "consul"
-  version    = "0.25"
+  # version    = "0.25"
   namespace  = var.namespace
 
   set {
