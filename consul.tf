@@ -5,7 +5,7 @@ resource "helm_release" "consul" {
   name       = "${var.release_name}-consul"
   chart      = "consul"
   # version    = "0.25"
-  namespace  = var.namespace
+  namespace = var.namespace
 
   set {
     name  = "global.name"
